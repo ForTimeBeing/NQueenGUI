@@ -3,6 +3,7 @@ import time
 
 QUEENS = 15
 SIZE_OF_SQUARES = 30
+SPEED = .3
 
 
 def main():
@@ -16,7 +17,7 @@ def main():
 
 
 def backTrack(board, col):
-    time.sleep(.3)
+    time.sleep(SPEED)
     # base case: If all queens are placed
     # then return true
     if col >= QUEENS:
