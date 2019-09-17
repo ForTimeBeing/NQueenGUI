@@ -1,3 +1,3 @@
 # NQueenGUI
 
-![](demo.gif)
+![](nqueen.gif)
