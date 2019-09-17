@@ -1,17 +1,12 @@
 import pygame
+import time
 
 QUEENS = 15
 SIZE_OF_SQUARES = 30
 
 
-def printSolution(board):
-    for i in range(QUEENS):
-        for j in range(QUEENS):
-            print(board[i][j], end=" ")
-        print()
-
-
 def main():
+    screen = createBoard()
     board = [[0 for col in range(QUEENS)] for row in range(QUEENS)]
     if not backTrack(board, 0):
         print("Solution does not exist")
@@ -21,6 +16,7 @@ def main():
 
 
 def backTrack(board, col):
+    time.sleep(.3)
     # base case: If all queens are placed
     # then return true
     if col >= QUEENS:
@@ -32,7 +28,7 @@ def backTrack(board, col):
             # Place this queen in board[i][col]
             board[i][col] = 1
 
-            placeQueen((board[i],board[col]))
+            placeQueen(i, col)
 
             # recur to place rest of the queens
             if backTrack(board, col + 1):
@@ -41,14 +37,28 @@ def backTrack(board, col):
             # doesn't lead to a solution, then
             # queen from board[i][col]
             board[i][col] = 0
+            removeQueen(i, col)
 
     # if the queen can not be placed in any row in
     # this colum col then return false
     return False
 
 
-def placeQueen(row,col):
-    print("x")
+def removeQueen(row, col):
+    if row % 2 == 0 and col % 2 == 0:
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(row * SIZE_OF_SQUARES, col * SIZE_OF_SQUARES, 30, 30))
+    if row % 2 == 0 and col % 2 == 1:
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(row * SIZE_OF_SQUARES, col * SIZE_OF_SQUARES, 30, 30))
+    if row % 2 == 1 and col % 2 == 0:
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(row * SIZE_OF_SQUARES, col * SIZE_OF_SQUARES, 30, 30))
+    if row % 2 == 1 and col % 2 == 1:
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(row * SIZE_OF_SQUARES, col * SIZE_OF_SQUARES, 30, 30))
+    pygame.display.flip()
+
+
+def placeQueen(row, col):
+    pygame.draw.rect(screen, (0, 155, 155), pygame.Rect(row * SIZE_OF_SQUARES + 7, col * SIZE_OF_SQUARES + 7, 15, 15))
+    pygame.display.flip()
 
 
 def canPlace(board, row, col):
@@ -68,15 +78,18 @@ def canPlace(board, row, col):
     return True
 
 
+(width, height) = (SIZE_OF_SQUARES * QUEENS, SIZE_OF_SQUARES * QUEENS)
+screen = pygame.display.set_mode((width, height))
+
+
 def createBoard():
     pygame.init()
     running = True
-    (width, height) = (SIZE_OF_SQUARES * QUEENS, SIZE_OF_SQUARES * QUEENS)
-    screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('N-Queens')
     background_colour = (255, 255, 255)
     screen.fill(background_colour)
-    while running:
+    # while running:
+    if True:
         width_of_board = 0
         height_of_board = 0
         every_other_color = 0
@@ -95,7 +108,14 @@ def createBoard():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+    return screen
+
+
+def printSolution(board):
+    for i in range(QUEENS):
+        for j in range(QUEENS):
+            print(board[i][j], end=" ")
+        print()
 
 
 main()
-# createBoard()
