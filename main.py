@@ -28,7 +28,6 @@ def backTrack(board, col):
         if canPlace(board, i, col):
             # Place this queen in board[i][col]
             board[i][col] = 1
-
             placeQueen(i, col)
 
             # recur to place rest of the queens
